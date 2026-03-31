@@ -10,13 +10,13 @@ import io
 import os
 from pathlib import Path
 from datetime import datetime
-from queue import Queue
+import queue as myqueue
 # Now you can create a Queue object like this:
 import pandas as pd
 from flask import Flask, render_template, request, jsonify, Response, send_file
 from openpyxl.styles import PatternFill, Font, Alignment, Border, Side
 from openpyxl.utils import get_column_letter
-queue = Queue(maxsize=0)
+myqueue.Queue(maxsize=0)
 
 app = Flask(__name__)
 app.config["MAX_CONTENT_LENGTH"] = 50 * 1024 * 1024
@@ -26,7 +26,7 @@ app.config["MAX_CONTENT_LENGTH"] = 50 * 1024 * 1024
 estado = {
     "corriendo":   False,
     "progreso":    [],      # lista de dicts {fila, tipo_doc, numero, estado, archivo, error, ...}
-    "log_queue":   queue.Queue(),
+    "log_queue":   myqueue.Queue(),
     "total":       0,
     "terminado":   False,
     "pdfs":        {},      # {nombre: bytes}
@@ -441,7 +441,7 @@ def stream():
                 yield f"data: {json.dumps(msg, ensure_ascii=False)}\n\n"
                 if msg.get("tipo") == "fin":
                     break
-            except queue.Empty:
+            except myqueue.Empty:
                 yield "data: {\"tipo\":\"ping\"}\n\n"
     return Response(generate(), mimetype="text/event-stream",
                     headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"})
