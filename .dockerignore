@@ -1,8 +1,5 @@
-__pycache__/
+.git
+.venv
+__pycache__
 *.pyc
-*.pyo
-*.pyd
-.git/
-.vscode/
-.env
-*.log
+.vscode
