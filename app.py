@@ -6,9 +6,6 @@ Flask + Playwright · Activa IT / RGC
 import asyncio
 import base64
 import json
-import queue
-import re
-import threading
 import io
 import os
 from pathlib import Path
